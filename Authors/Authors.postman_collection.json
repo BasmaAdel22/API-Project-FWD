@@ -1,0 +1,320 @@
+{
+	"info": {
+		"_postman_id": "6bd12a46-817d-4259-b5cd-e3a358f72b81",
+		"name": "Authors",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23836149"
+	},
+	"item": [
+		{
+			"name": "Get Authors",
+			"item": [
+				{
+					"name": "Get All Authors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//response is \"200 OK\".\r",
+									"pm.test(\"Response for Successfull HTTP request 200 ok\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Objects inside response contain, id, idBook, firstName, lastName.\r",
+									"var obj_Num = pm.response.json().length;\r",
+									"var rand_Num = Math.floor(Math.random()*obj_Num);\r",
+									"\r",
+									"pm.test(\"Check objects inside response body\", function() {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[rand_Num]).to.have.all.keys('id','idBook','firstName','lastName');\r",
+									"});\r",
+									"\r",
+									"//validate response size\r",
+									"pm.test(\"check response size\", function() {\r",
+									"    pm.expect(pm.response.responseSize).to.be.within(40000,60000);\r",
+									"});\r",
+									"\r",
+									"//validate response headers\r",
+									"pm.test(\"check response headers\", function() {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"})\r",
+									"\r",
+									"//validate response headers \"Content-Type\" contains json data\r",
+									"pm.test(\"check response headers contain json data\", function() {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/Authors",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Searching with valid idBook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//response is \"200 OK\".\r",
+									"pm.test(\"check author list is not empty\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.json().length).have.to.above(0);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"var json = pm.response.json();\r",
+									"//var isAuthorFound = false;\r",
+									"\r",
+									"pm.test(\"all authors should have same idBook\", function() {\r",
+									"    for(let x=0; x<json.length; x++)\r",
+									"    {\r",
+									"        pm.expect(json[x].idBook).have.to.equal(1);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/Authors/authors/books/{{idBook}}",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								"authors",
+								"books",
+								"{{idBook}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Authors",
+			"item": [
+				{
+					"name": "Add New Author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response for Successfull HTTP request 200 ok\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body contains firstname and lastname\", function() {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(pm.response.json()).to.have.any.keys('firstName','lastName');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 950,\r\n  \"idBook\": 1234,\r\n  \"firstName\": \"first\",\r\n  \"lastName\": \"last\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/Authors",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Author by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response for Successfull HTTP request 200 ok\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"author's data in response is updated successfully\", function() {\r",
+									"    pm.expect(pm.response.json().firstName).to.contain(\"Basma\");\r",
+									"    pm.expect(pm.response.json().lastName).to.contain(\"Adel\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 900,\r\n  \"idBook\": 21,\r\n  \"firstName\": \"Basma\",\r\n  \"lastName\": \"Adel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/Authors/4",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Author's data changed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response for Successfull HTTP request 200 ok\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"the author's data is changed in GET request\", function() {\r",
+									"    pm.expect(pm.response.json().firstName).to.contain(\"Basma\");\r",
+									"    pm.expect(pm.response.json().lastName).to.contain(\"Adel\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/Authors/1",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete Authors",
+			"item": [
+				{
+					"name": "Delete Author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response for Successfull HTTP request 200 ok\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/api/v1/Authors/100",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								"100"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

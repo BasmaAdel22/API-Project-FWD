@@ -1,0 +1,57 @@
+Base Url : http://fakerestapi.azurewebsites.net/index.html
+
+1-
+ API: GET /api/v1/Authors
+ Test Case: response should be 200 OK
+ Expected Result: 200 OK
+ Actual Result: 200 OK
+ Status: Pass
+
+2-
+ API: GET /api/v1/Authors
+ Test Case: response body should contain, id, idBook, firstName, lastName.
+ Expected Result: response body contain, id, idBook, firstName, lastName
+ Actual Result: contain, id, idBook, firstName, lastName
+ Status: Pass
+
+3-
+ API: POST /api/v1/Authors
+ Test Case: Register a new valid Author successfully and response code "201 Created".
+ Expected Result:  response code should be  "201 Created
+ Actual Result: 200 ok
+ Status: fail
+
+4-
+ API: POST /api/v1/Authors
+ Test Case: firstname & lastname should be mandatory.
+ Expected Result:  firstname & lastname should be mandatory
+ Actual Result:  firstname & lastname doesn't be mandatory
+ Status: fail
+
+5-
+ API: POST /api/v1/Authors
+ Test Case: firstname & lastname should be mandatory.
+ Expected Result: response code should be 400
+ Actual Result: response code 200
+ Status: fail
+
+6-
+ API: GET /api/v1/Authors/authors/books/{idBook}
+ Test Case: Searching with valid idBook should return relative data in response body.
+ Expected Result: response body should contain idBook 
+ Actual Result: response body contain idBook
+ Status: pass
+
+7-
+ API:PUT /api/v1/Authors/{id}
+ Test Case: Author's data is updated successfully
+ Expected Result:Author's data is should be update successfully 
+ Actual Result: Author's data is updated 
+ Status: pass
+
+8-
+ API:GET/api​/v1​/Authors​/{id}
+ Test Case:The author's data is changed in GET request
+ Expected Result:The author's data should be changed in GET request
+ Actual Result: Author's data is not changed 
+ Status: fail
